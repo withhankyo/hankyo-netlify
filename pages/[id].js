@@ -1,10 +1,17 @@
 // pages/posts/[id].js
+import Head from "next/head"
 import fetch from 'node-fetch'
 
 function Post({ post }) {
   return(
     <div>
+      <Head>
+        <title>{post.title}</title>
+        <meta name="description" content={post.body} />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <h1>{post.title}</h1>
+      <p>{post.body}</p>
     </div>
   )
 }
