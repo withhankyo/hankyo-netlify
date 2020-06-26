@@ -4,9 +4,12 @@ import fetch from "node-fetch"
 
 export async function getStaticProps() {
   const prod = process.env.NODE_ENV === "production"
-  const API_URL = prod ? "https://jsonplaceholder.typicode.com/posts" : "https://jsonplaceholder.typicode.com/posts"
+  const API_URL = prod ? "https://hankyo-api-dev.herokuapp.com/mies/projects/4507e0cd45f81c0a" : "http://localhost:4000/mies/projects/a6fe0829b6982816"
   const res = await fetch(`${API_URL}`)
   const hankyo = await res.json()
+
+  // console.log(hankyo)
+
   return { props: { hankyo }}
 }
 
@@ -14,31 +17,17 @@ export default function Home({hankyo}) {
   return (
     <div className="container">
       <Head>
-        <title>Create Next App</title>
+        <title>{hankyo.project.meta_title || "Hankyo Next"}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <div>
-        {hankyo.map((post) => (
-          <li key={`${post.id}`}>
-            <Link href="/[id]" as={`/${post.id}/`}><a>{post.title}</a></Link>
-          </li>
+        <h1>{hankyo.project.title}</h1>
+        <p>{hankyo.project.description}</p>
+        {hankyo.project.blocks.map((block) => (
+          <li key={`${block.id}`}>{block.title}</li>
         ))}
       </div>
-      <form name="contact" method="POST" encType="application/x-www-form-urlencoded" data-netlify="true">
-        <input type="hidden" name="form-name" value="contact" />
-        <p>
-          <label>Your Name: <input type="text" name="name" /></label>
-        </p>
-        <p>
-          <label>Your Email: <input type="email" name="email" /></label>
-        </p>
-        <p>
-          <label>Message: <textarea name="message"></textarea></label>
-        </p>
-        <p>
-          <button type="submit">Send</button>
-        </p>
-      </form>
     </div>
   )
 }
